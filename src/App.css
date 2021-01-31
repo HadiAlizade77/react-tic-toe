@@ -1,15 +1,23 @@
 td {
     width: 100px;
     height: 100px;
+    border-spacing: 0;
+
 }
 table {
     margin: 15px auto;
+    border-spacing: 0;
+
 }
 .vertical {
+    border-spacing: 0;
+
     border-left: 2px solid black;
     border-right: 2px solid black;
 }
 .horizontal {
+    border-spacing: 0;
+
     border-top: 2px solid black;
     border-bottom: 2px solid black;
 }

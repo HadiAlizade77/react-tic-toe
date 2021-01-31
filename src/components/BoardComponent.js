@@ -24,7 +24,8 @@ const BoardComponent = (props) => {
                             checkCell(cellId);
                         }}
                         cellId={cellId}
-                        board={props.board}
+                        game={{ ...props.board }}
+                        board={props.board.boardState}
                     />
                 </td>
             );

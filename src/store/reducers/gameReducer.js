@@ -1,4 +1,4 @@
-import { CHECK_CELL } from '../actions';
+import { CHECK_CELL, SET_WINNER_PATTERN, FINISH_GAME } from '../actions';
 
 const initialState = {
     winningPatterns: [
@@ -19,47 +19,28 @@ const initialState = {
     moves: 0
 };
 
-const isCellEmpty = (state, boardId) => {
-    return state.boardState[boardId] === null;
-};
-const getPlayerMoves = (boardState, player) => {
-    return boardState
-        .map((cell) => cell === player)
-        .reduce((out, bool, index) => (bool ? out.concat(index) : out), []);
-};
-const checkForWin = (state, player) => {
-    const moves = getPlayerMoves(state, player);
-    let winnerPattern = null;
-    if (moves.length >= 3) {
-        state.winningPatterns.some((pattern) => {
-            const winning = moves.every((move) => {
-                return pattern.includes(move);
-            });
-            if (winning) {
-                winnerPattern = pattern;
-            }
-            return winning;
-        });
-    }
-    return winnerPattern;
-};
-
 export default function (state = initialState, action) {
     switch (action.type) {
         case CHECK_CELL: {
-            if (isCellEmpty(state, action.payload)) {
-                const player = state.xTurn ? 'x' : 'o';
-                state.boardState[action.payload] = player;
-                state.xTurn = !state.xTurn;
-                state.moves++;
-                const win =
-                    checkForWin(state, player) !== null ? checkForWin(state, player) : false;
-                if (win !== false) {
-                    state.gameOver = true;
-                    state.winnerPattern = win;
-                }
-            }
-            break;
+            return {
+                ...state,
+                xTurn: !state.xTurn,
+                boardState: action.board,
+                moves: ++state.moves
+            };
+        }
+        case SET_WINNER_PATTERN: {
+            return {
+                ...state,
+                winner: action.winner,
+                winnerPattern: action.winnerPattern
+            };
+        }
+        case FINISH_GAME: {
+            return {
+                ...state,
+                gameOver: true
+            };
         }
         default:
             return state;
